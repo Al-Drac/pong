@@ -10,6 +10,7 @@ int winw,winh,pad1y,pad2y;
 SDL_Window * win=NULL;
 SDL_Renderer * renderer=NULL;
 
+
 typedef struct {
   SDL_Rect rect;
   int xvel,yvel;
