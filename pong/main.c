@@ -1,8 +1,10 @@
 /*=============================================================================
-		A simple pong game written in C using SDL 
-		
+		A simple pong game written in C using SDL
+
 To compile install libsdl2 and run:
 	gcc main.c -lSDL2 -o pong
+    SOUS MAC :
+    gcc main.c -o pong -I include -L lib -l SDL2-2.0.0
 	./pong
 ===============================================================================*/
 
@@ -25,7 +27,7 @@ void update(Obj * object,int isball,int up){
 		if(object->rect.x<20 && object->rect.y>pad1y && object->rect.y<pad1y+100){			//ball hits pad1
 			object->xvel=-object->xvel;
 			object->rect.x=20;
-		}	
+		}
 		if(object->rect.y>winh-object->rect.h){								//ball hits the bottom edge of the window
 			object->yvel=-object->yvel;
 			object->rect.y=winh-object->rect.h;
@@ -51,7 +53,7 @@ void update(Obj * object,int isball,int up){
 
 int initialize(SDL_Window * win, SDL_Renderer * renderer ){
 
-  
+
   printf("Hello");
   //initializing sdl
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
@@ -75,24 +77,24 @@ int initialize(SDL_Window * win, SDL_Renderer * renderer ){
     return 1;
   }
   return 0;
-  
+
 }
 
 
-int main(int argc,char argv[]){
-  
+int main(int argc,char** argv){
+
 	SDL_Window * win=NULL;
 	SDL_Renderer * renderer=NULL;
 	/*
-	
-	
+
+
 	//initializing sdl
 	if(SDL_Init(SDL_INIT_VIDEO)!=0)
 	{
 		printf("SDL error %s\n",SDL_GetError());
 		return 1;
 	}
-	
+
 	//creating a window and a renderer
 	win = SDL_CreateWindow("Pong",
 				SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
@@ -100,9 +102,9 @@ int main(int argc,char argv[]){
 	if(win==NULL){
 		printf("Window cannot be created %s\n",SDL_GetError());
 		return 1;
-	}	
+	}
 	SDL_GetWindowSize(win,&winw,&winh);
-	renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);	
+	renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if(renderer==NULL){
 		printf("Renderer cannot be created %s\n",SDL_GetError());
 		return 1;
@@ -114,10 +116,10 @@ int main(int argc,char argv[]){
 	initialize(win, renderer);
 
 	printf("fin init");
-	
+
 	//creating objects
 	Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
-	Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);	
+	Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);
 	Obj ball = newObj(winw/2,winh/2,10,10,5,5);
 	Obj cline = newObj((winw-2)/2,0,2,winh,0,0);
 
@@ -149,7 +151,7 @@ int main(int argc,char argv[]){
 							s=1;
 							break;
 					}
-					break;	
+					break;
 				case SDL_KEYUP:
 					switch(e.key.keysym.sym){
 						case SDLK_UP:
@@ -165,7 +167,7 @@ int main(int argc,char argv[]){
 							s=0;
 							break;
 					}
-					break;		
+					break;
 			}
 		}
 
@@ -174,23 +176,23 @@ int main(int argc,char argv[]){
 
 		update(&ball,1,0);				//updates ball position
 
-		SDL_SetRenderDrawColor(renderer,0,0,255,0);	//set renderer color to blue	
+		SDL_SetRenderDrawColor(renderer,0,0,0,0);	//set renderer color to blue
 		SDL_RenderClear(renderer);			//renders blue background
-	
+
 		if(up) update(&pad2,0,1);
 		if(down) update(&pad2,0,0);
 		if(w) update(&pad1,0,1);
 		if(s) update(&pad1,0,0);
 
 		SDL_SetRenderDrawColor(renderer,255,255,255,0); //set renderer color to white
-		SDL_RenderFillRect(renderer,&(cline.rect));	//render the center line	
+		SDL_RenderFillRect(renderer,&(cline.rect));	//render the center line
 		SDL_RenderFillRect(renderer,&(ball.rect));	//render the ball
 		SDL_RenderFillRect(renderer,&(pad1.rect));	//render pad1
-		SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2	
+		SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2
 
 		SDL_RenderPresent(renderer);			//render all of that to the screen finally
-		SDL_Delay(1000/60);				
-		
+		SDL_Delay(1000/60);
+
 	}
 
 
