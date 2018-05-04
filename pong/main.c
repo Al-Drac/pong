@@ -49,7 +49,7 @@ void update(Obj * object,int isball,int up){
 	return;
 }
 
-void initialize(/*SDL_Window * win, SDL_Renderer * renderer*/ ){
+void initialize(){
 
   
   printf("Hello");
@@ -57,7 +57,7 @@ void initialize(/*SDL_Window * win, SDL_Renderer * renderer*/ ){
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
     {
       printf("SDL error %s\n",SDL_GetError());
-      //return 1;
+     
     }
 
   //creating a window and a renderer
@@ -66,54 +66,72 @@ void initialize(/*SDL_Window * win, SDL_Renderer * renderer*/ ){
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
   if(win==NULL){
     printf("Window cannot be created %s\n",SDL_GetError());
-    //return 1;
+  
   }
   SDL_GetWindowSize(win,&winw,&winh);
   renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(renderer==NULL){
     printf("Renderer cannot be created %s\n",SDL_GetError());
-    //return 1;
+    
   }
-  //return 0;
-  
+    
 }
 
 
-int main(int argc,char argv[]){
-  /*
-	SDL_Window * win=NULL;
-	SDL_Renderer * renderer=NULL;*/
-	
-	
-	/*
-	//initializing sdl
-	if(SDL_Init(SDL_INIT_VIDEO)!=0)
-	{
-		printf("SDL error %s\n",SDL_GetError());
-		return 1;
-	}
-	
-	//creating a window and a renderer
-	win = SDL_CreateWindow("Pong",
-				SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
-				WINDOW_WIDTH,WINDOW_HEIGHT,0);
-	if(win==NULL){
-		printf("Window cannot be created %s\n",SDL_GetError());
-		return 1;
-	}	
-	SDL_GetWindowSize(win,&winw,&winh);
-	renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);	
-	if(renderer==NULL){
-		printf("Renderer cannot be created %s\n",SDL_GetError());
-		return 1;
-	}
+void loop(int choice[]){
+  SDL_Event e;
+  while(SDL_PollEvent(&e)!=0){            //handling events
+    switch (e.type){
+    case SDL_QUIT:
+      choice[0] = 1;
+      continue;
+      break;
+    case SDL_KEYDOWN:
+      switch(e.key.keysym.sym){
+      case SDLK_ESCAPE:
+	choice[0] = 1;
+	break;
+      case SDLK_UP:
+	choice[1] = 1;
+	break;
+      case SDLK_DOWN:
+	choice[2] = 1;
+	break;
+      case SDLK_w:
+	choice[3] = 1;
+	break;
+      case SDLK_s:
+	choice[4] = 1;
+	break;
+      }
+      break;
+    case SDL_KEYUP:
+      switch(e.key.keysym.sym){
+      case SDLK_UP:
+	choice[1] = 0;
+	break;
+      case SDLK_DOWN:
+	choice[2] = 0;
+	break;
+      case SDLK_w:
+	choice[3] = 0;
+	break;
+      case SDLK_s:
+	choice[4] = 0;
+	break;
+      }
+      break;
+    }
+}  
 
-	*/
+}
+int main(int argc,char argv[]){
+  
 
 	
 	printf("go init");
 
-	initialize(/*win, renderer*/);
+	initialize();
 	
 	printf("fin init");
 	
@@ -126,60 +144,28 @@ int main(int argc,char argv[]){
 	Obj cline = newObj((winw-2)/2,0,2,winh,0,0);
 
 	int terminate=0,up=0,down=0,w=0,s=0;
+	int choice[5] = {0};
+	
 	while(!terminate)				//game loop
 	{
-		SDL_Event e;
-		while(SDL_PollEvent(&e)!=0){		//handling events
-			switch (e.type){
-				case SDL_QUIT:
-					terminate=1;
-					continue;
-					break;
-				case SDL_KEYDOWN:
-					switch(e.key.keysym.sym){
-						case SDLK_ESCAPE:
-							terminate=1;
-							break;
-						case SDLK_UP:
-							up=1;
-							break;
-						case SDLK_DOWN:
-							down=1;
-							break;
-						case SDLK_w:
-							w=1;
-							break;
-						case SDLK_s:
-							s=1;
-							break;
-					}
-					break;	
-				case SDL_KEYUP:
-					switch(e.key.keysym.sym){
-						case SDLK_UP:
-							up=0;
-							break;
-						case SDLK_DOWN:
-							down=0;
-							break;
-						case SDLK_w:
-							w=0;
-							break;
-						case SDLK_s:
-							s=0;
-							break;
-					}
-					break;		
-			}
-		}
+
+	  loop(choice);
+
+	  terminate = choice[0];
+	  up = choice[1];
+	  down = choice[2];
+	  w  = choice[3];
+	  s  = choice[4];
+			
+		
 
 		pad1y=pad1.rect.y;				//copies y pos of pad1 and pad2 to global variables pad1y and pad2y
 		pad2y=pad2.rect.y;				//to be used by the update function to check for ball and pad collision.
 
 		update(&ball,1,0);				//updates ball position
 
-		SDL_SetRenderDrawColor(renderer,0,0,255,0);	//set renderer color to blue	
-		SDL_RenderClear(renderer);			//renders blue background
+		SDL_SetRenderDrawColor(renderer,0,0,0,0);	//set renderer color to black	
+		SDL_RenderClear(renderer);			//renders black background
 	
 		if(up) update(&pad2,0,1);
 		if(down) update(&pad2,0,0);
