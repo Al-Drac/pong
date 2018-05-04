@@ -51,7 +51,7 @@ void update(Obj * object,int isball,int up){
 	return;
 }
 
-int initialize(SDL_Window * win, SDL_Renderer * renderer ){
+int initialize(){
 
 
   printf("Hello");
@@ -113,7 +113,7 @@ int main(int argc,char** argv){
 	*/
 	printf("go init");
 
-	initialize(win, renderer);
+	initialize();
 
 	printf("fin init");
 
