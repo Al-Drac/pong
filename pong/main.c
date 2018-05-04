@@ -49,7 +49,7 @@ void update(Obj * object,int isball,int up){
 	return;
 }
 
-int initialize(){
+void initialize(/*SDL_Window * win, SDL_Renderer * renderer*/ ){
 
   
   printf("Hello");
@@ -57,7 +57,7 @@ int initialize(){
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
     {
       printf("SDL error %s\n",SDL_GetError());
-      return 1;
+      //return 1;
     }
 
   //creating a window and a renderer
@@ -66,26 +66,26 @@ int initialize(){
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
   if(win==NULL){
     printf("Window cannot be created %s\n",SDL_GetError());
-    return 1;
+    //return 1;
   }
   SDL_GetWindowSize(win,&winw,&winh);
   renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(renderer==NULL){
     printf("Renderer cannot be created %s\n",SDL_GetError());
-    return 1;
+    //return 1;
   }
-  return 0;
+  //return 0;
   
 }
 
 
 int main(int argc,char argv[]){
-  
+  /*
 	SDL_Window * win=NULL;
-	SDL_Renderer * renderer=NULL;
+	SDL_Renderer * renderer=NULL;*/
+	
+	
 	/*
-	
-	
 	//initializing sdl
 	if(SDL_Init(SDL_INIT_VIDEO)!=0)
 	{
@@ -109,12 +109,16 @@ int main(int argc,char argv[]){
 	}
 
 	*/
+
+	
 	printf("go init");
 
-	initialize();
-
+	initialize(/*win, renderer*/);
+	
 	printf("fin init");
 	
+
+
 	//creating objects
 	Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
 	Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);	
