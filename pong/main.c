@@ -1,25 +1,24 @@
-
 #include "pong.h"
 
 void update(Obj * object,int isball,int up){
-  if (isball==1){		//execute if it is the ball
+  if (isball==1){		//Verif obj = balle
     object->rect.x+=object->xvel;
     object->rect.y+=object->yvel;
-    if( (object->rect.x>winw-object->rect.w) || (object->rect.x<0) ){				//ball goes out of screen
+    if( (object->rect.x>winw-object->rect.w) || (object->rect.x<0) ){				//la balle sort de l'écran 
       SDL_Delay(1000);
       object->xvel=-object->xvel;
       object->rect.x=winw/2;
       object->rect.y=winh/2;
     }
-    if(object->rect.x>winw-20-object->rect.w && object->rect.y>pad2y && object->rect.y<pad2y+100){	//ball hits pad2
+    if(object->rect.x>winw-20-object->rect.w && object->rect.y>pad2y && object->rect.y<pad2y+100){	//la balle touche le pad2
       object->xvel=-object->xvel;
       object->rect.x=winw-20-object->rect.w;
     }
-    if(object->rect.x<20 && object->rect.y>pad1y && object->rect.y<pad1y+100){			//ball hits pad1
+    if(object->rect.x<20 && object->rect.y>pad1y && object->rect.y<pad1y+100){			//la balle touche le pad1
       object->xvel=-object->xvel;
       object->rect.x=20;
     }
-    if(object->rect.y>winh-object->rect.h){								//ball hits the bottom edge of the window
+    if(object->rect.y>winh-object->rect.h){								//La balle touche le bas de l'écran
       object->yvel=-object->yvel;
       object->rect.y=winh-object->rect.h;
     }
@@ -27,15 +26,15 @@ void update(Obj * object,int isball,int up){
       object->yvel=-object->yvel;
       object->rect.y=0;
     }
-  }else {			//execute if it is one of the pads
+  }else {			//Si obj = un des pads
     if(up==1)
       object->rect.y-=object->yvel;
     else
       object->rect.y+=object->yvel;
-    if(object->rect.y>winh-object->rect.h){								//pad hits the bottom edge of the window
+    if(object->rect.y>winh-object->rect.h){								//le pad touche bas de l'écran
       object->rect.y=winh-object->rect.h;
     }
-    if(object->rect.y<0){										//pad hits the top edge of the window
+    if(object->rect.y<0){										//le pad touche le haut de l'écran
       object->rect.y=0;
     }
   }
@@ -44,14 +43,13 @@ void update(Obj * object,int isball,int up){
 
 void initialize(){
   printf("Hello");
-  //initializing sdl
+  //initialisation SDL
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
     {
       printf("SDL error %s\n",SDL_GetError());
-     
     }
 
-  //creating a window and a renderer
+  //crée window et renderer
   win = SDL_CreateWindow("Pong",
 			 SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
@@ -63,15 +61,13 @@ void initialize(){
   renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(renderer==NULL){
     printf("Renderer cannot be created %s\n",SDL_GetError());
-    
-  }
-    
+    }
 }
 
 
 void loop(int choice[]){
   SDL_Event e;
-  while(SDL_PollEvent(&e)!=0){            //handling events
+  while(SDL_PollEvent(&e)!=0){            //gestion des events
     switch (e.type){
     case SDL_QUIT:
       choice[0] = 1;
@@ -115,18 +111,17 @@ void loop(int choice[]){
     }
   }  
 }
+
 int main(int argc,char argv[]){
-  printf("go init");
   initialize();
-  printf("fin init");
-  //creating objects
+  //creation des objets
   Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
   Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);	
   Obj ball = newObj(winw/2,winh/2,10,10,5,5);
   Obj cline = newObj((winw-2)/2,0,2,winh,0,0);
   int terminate=0,up=0,down=0,w=0,s=0;
   int choice[5] = {0};
-  while(!terminate)				//game loop
+  while(!terminate)				//boucle
     {
       loop(choice);
       terminate = choice[0];
@@ -134,22 +129,22 @@ int main(int argc,char argv[]){
       down = choice[2];
       w  = choice[3];
       s  = choice[4];
-      pad1y=pad1.rect.y;				//copies y pos of pad1 and pad2 to global variables pad1y and pad2y
-      pad2y=pad2.rect.y;				//to be used by the update function to check for ball and pad collision.
-      update(&ball,1,0);				//updates ball position
-      SDL_SetRenderDrawColor(renderer,0,0,0,0);	//set renderer color to black	
-      SDL_RenderClear(renderer);			//renders black background
+      pad1y=pad1.rect.y;				//copie position y des pads vers variable globale
+      pad2y=pad2.rect.y;			       
+      update(&ball,1,0);				//update position de la balle
+      SDL_SetRenderDrawColor(renderer,0,0,0,0);	//mettre la couleur du renderer sur black
+      SDL_RenderClear(renderer);			//applique couleur noir
 	
       if(up) update(&pad2,0,1);
       if(down) update(&pad2,0,0);
       if(w) update(&pad1,0,1);
       if(s) update(&pad1,0,0);
-      SDL_SetRenderDrawColor(renderer,255,255,255,0); //set renderer color to white
-      SDL_RenderFillRect(renderer,&(cline.rect));	//render the center line	
-      SDL_RenderFillRect(renderer,&(ball.rect));	//render the ball
+      SDL_SetRenderDrawColor(renderer,255,255,255,0); //mettre couleur à blanc
+      SDL_RenderFillRect(renderer,&(cline.rect));	//render ligne blanche	
+      SDL_RenderFillRect(renderer,&(ball.rect));	//render balle
       SDL_RenderFillRect(renderer,&(pad1.rect));	//render pad1
       SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2	
-      SDL_RenderPresent(renderer);			//render all of that to the screen finally
+      SDL_RenderPresent(renderer);			//render tous les elements sur l'écran
       SDL_Delay(1000/60);
     }
   SDL_DestroyRenderer(renderer);
