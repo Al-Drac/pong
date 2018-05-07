@@ -112,7 +112,16 @@ void loop(int choice[]){
   }  
 }
 
-int main(int argc,char argv[]){
+int main(int argc,char *argv[]){
+  printf("hello");
+  if(argv[1]){
+    if (!strcmp(argv[1], "-server")){
+      server();
+    }
+    if (!strcmp(argv[1], "-client")){
+      client(argc, argv);
+    }
+  }
   initialize();
   //creation des objets
   Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
