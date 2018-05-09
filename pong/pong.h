@@ -50,12 +50,12 @@ t_item newObj(int x,int y,int w,int h,int vector_x,int vector_y){
 
 
 
-void server();
-int client(int argc, char *argv[]);
-void init_sdl();
-void loop(int choice[]);
-int main(int argc,char *argv[]);
-void status_up(t_item *obj,int ball,int u);
+void  server();
+int   client(int argc, char *argv[]);
+void  init_sdl();
+void  loop(int choice[]);
+int   main(int argc,char *argv[]);
+void  status_up(t_item *obj,int ball,int u);
 
 
 #endif /* !PONG_H_ */

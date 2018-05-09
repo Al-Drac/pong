@@ -54,31 +54,23 @@ void status_up(t_item *obj,int ball,int u){
 
 void init_sdl(){
   printf("------------- initialisation SDL --------------\n");
-  //initialisation SDL
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
-    {
       printf("SDL error %s\n",SDL_GetError());
-    }
-
-  //crée window et renderer
   window = SDL_CreateWindow("Pong",
 			 SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
-  if(window==NULL){
+  if(window==NULL)
     printf("Window cannot be created %s\n",SDL_GetError());
-
-  }
   SDL_GetWindowSize(window,&window_Width,&window_height);
   renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-  if(renderer==NULL){
+  if(renderer==NULL)
     printf("Renderer cannot be created %s\n",SDL_GetError());
-  }
 }
 
 
 void loop(int choice[]){
   SDL_Event e;
-  while(SDL_PollEvent(&e)!=0){            //gestion des events
+  while(SDL_PollEvent(&e)!=0){
     switch (e.type){
     case SDL_QUIT:
       choice[0] = 1;
@@ -124,6 +116,11 @@ void loop(int choice[]){
 }
 
 int main(int argc,char *argv[]){
+  t_item pad1;
+  t_item pad2;
+  t_item ball;
+  t_item cline;
+
   printf("hello");
   if(argv[1]){
     if (!strcmp(argv[1], "-server")){
@@ -135,10 +132,11 @@ int main(int argc,char *argv[]){
   }
   init_sdl();
   //creation des objets
-  t_item pad1  = newObj(5,(window_height-100)/2,15,100,0,10);
-  t_item pad2 = newObj(window_Width-20,(window_height-100)/2,15,100,0,10);
-  t_item ball = newObj(window_Width/2,window_height/2,10,10,5,5);
-  t_item cline = newObj((window_Width-2)/2,0,2,window_height,0,0);
+  pad1  = newObj(5,(window_height-100)/2,15,100,0,10);
+  pad2 = newObj(window_Width-20,(window_height-100)/2,15,100,0,10);
+  ball = newObj(window_Width/2,window_height/2,10,10,5,5);
+  cline = newObj((window_Width-2)/2,0,2,window_height,0,0);
+
   int terminate=0;
   int up=0;
   int down=0;
@@ -148,11 +146,13 @@ int main(int argc,char *argv[]){
   while(!terminate)				//boucle
     {
       loop(choice);
-      terminate = choice[0];
-      up = choice[1];
-      down = choice[2];
-      w  = choice[3];
-      s  = choice[4];
+
+      terminate     = choice[0];
+      up            = choice[1];
+      down          = choice[2];
+      w             = choice[3];
+      s             = choice[4];
+
       paddle_1=pad1.rectangle.y;				//copie position y des pads vers variable globale
       paddle_2=pad2.rectangle.y;
       status_up(&ball,1,0);				//update position de la balle
