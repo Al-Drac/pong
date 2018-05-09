@@ -14,11 +14,14 @@ SDL_Renderer * renderer=NULL;
 
 typedef struct {
   SDL_Rect rect;
-  int xvel,yvel;
+  int score, xvel, yvel;
+  char* name;
 }Obj;
 
-Obj newObj(int x,int y,int w,int h,int xvel,int yvel){
+Obj newObj(char* std, int score, int x, int y, int w, int h, int xvel, int yvel){
   Obj new;
+  new.name = std;
+  new.score = score;
   new.rect.w=w;   //width
   new.rect.h=h;   //height
   new.rect.x=x;   //x position of the left topmost point
