@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_render.h>
+#include <string.h>
 
 #define WINDOW_WIDTH 720
 #define WINDOW_HEIGHT 480
@@ -26,3 +27,6 @@ Obj newObj(int x,int y,int w,int h,int xvel,int yvel){
   new.yvel=yvel;  //y velocity
   return new;
 }
+
+void server();
+int client(int argc, char *argv[]);
