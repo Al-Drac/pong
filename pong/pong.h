@@ -1,3 +1,16 @@
+/*
+** pong.h for pong in /home/samuel/tmp/pong/pong
+**
+** Made by THOMAS Samuel
+** Login   <thomas_s@etna-alternance.net>
+**
+** Started on  Wed May  9 09:47:58 2018 THOMAS Samuel
+** Last update Wed May  9 09:51:29 2018 THOMAS Samuel
+*/
+
+#ifndef PONG_H_
+# define PONG_H_
+
 #include<stdio.h>
 #include<SDL2/SDL.h>
 #include<SDL2/SDL_render.h>
@@ -30,3 +43,5 @@ Obj newObj(int x,int y,int w,int h,int xvel,int yvel){
 
 void server();
 int client(int argc, char *argv[]);
+
+#endif /* !PONG_H_ */

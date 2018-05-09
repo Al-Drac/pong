@@ -1,3 +1,13 @@
+/*
+** client.c for client in /home/samuel/tmp/pong/pong
+**
+** Made by THOMAS Samuel
+** Login   <thomas_s@etna-alternance.net>
+**
+** Started on  Wed May  9 09:35:25 2018 THOMAS Samuel
+** Last update Wed May  9 09:46:17 2018 THOMAS Samuel
+*/
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
