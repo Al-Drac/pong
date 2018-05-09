@@ -12,12 +12,18 @@ CC	= @gcc
 
 NAME	= pong
 
+host = $(shell uname)
+
 CFLAGS	= -W -Wall -Werror -Wextra -g3
 CFLAGS	+= -I/usr/include/SDL2
 CDEBUG	= -g3 -g
 
 LDFLAGS	= -Llib/ -lmy
 LDFLAGS=	-L/usr/include/SDL2  -lSDL2
+
+ifeq ($(host),Darwin)
+LFLAGS = -I include -L lib -l SDL2-2.0.0
+endif
 
 SRCS	=	client.c	\
 		server.c	\
@@ -43,10 +49,15 @@ COLOR=          \x1b[32;01m
 
 all : $(NAME)
 
+ifeq ($(host),Darwin)
+$(NAME) : $(OBJS)
+	$(CC) $(OBJS) -o $(NAME) $(LFLAGS)
+	$(ECHO) '\033[0;32m> Compiled\033[0m'
+else
 $(NAME) : $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 	$(ECHO) '\033[0;32m> Compiled\033[0m'
-
+endif
 clean :
 	$(RM) $(OBJS)
 	$(ECHO) '\033[0;35m> Directory cleaned\033[0m'
