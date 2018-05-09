@@ -126,6 +126,7 @@ int main(int argc,char *argv[]){
   t_item cline;
 
   printf("------------- Main --------------\n");
+
   if(argv[1]){
     if (!strcmp(argv[1], "-server")){
       server();
@@ -146,6 +147,7 @@ int main(int argc,char *argv[]){
   int down=0;
   int w=0;
   int s=0;
+
   int choice[5] = {0};
   while(!terminate)				//boucle
     {
@@ -176,6 +178,7 @@ int main(int argc,char *argv[]){
       SDL_RenderFillRect(renderer,&(ball.rectangle));	//render balle
       SDL_RenderFillRect(renderer,&(pad1.rectangle));	//render pad1
       SDL_RenderFillRect(renderer,&(pad2.rectangle));	//render pad2
+
       SDL_RenderPresent(renderer);			//render tous les elements sur l'écran
       SDL_Delay(1000/60);
     }
