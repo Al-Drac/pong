@@ -1,10 +1,20 @@
+/*
+** main.c for main in /home/samuel/tmp/pong/pong
+**
+** Made by THOMAS Samuel
+** Login   <thomas_s@etna-alternance.net>
+**
+** Started on  Wed May  9 09:35:25 2018 THOMAS Samuel
+** Last update Wed May  9 09:42:10 2018 THOMAS Samuel
+*/
+
 #include "pong.h"
 
 void update(Obj * object,int isball,int up){
   if (isball==1){		//Verif obj = balle
     object->rect.x+=object->xvel;
     object->rect.y+=object->yvel;
-    if( (object->rect.x>winw-object->rect.w) || (object->rect.x<0) ){				//la balle sort de l'écran 
+    if( (object->rect.x>winw-object->rect.w) || (object->rect.x<0) ){				//la balle sort de l'écran
       SDL_Delay(1000);
       object->xvel=-object->xvel;
       object->rect.x=winw/2;
@@ -55,13 +65,13 @@ void initialize(){
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
   if(win==NULL){
     printf("Window cannot be created %s\n",SDL_GetError());
-  
+
   }
   SDL_GetWindowSize(win,&winw,&winh);
   renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(renderer==NULL){
     printf("Renderer cannot be created %s\n",SDL_GetError());
-    }
+  }
 }
 
 
@@ -109,7 +119,7 @@ void loop(int choice[]){
       }
       break;
     }
-  }  
+  }
 }
 
 int main(int argc,char *argv[]){
@@ -125,7 +135,7 @@ int main(int argc,char *argv[]){
   initialize();
   //creation des objets
   Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
-  Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);	
+  Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);
   Obj ball = newObj(winw/2,winh/2,10,10,5,5);
   Obj cline = newObj((winw-2)/2,0,2,winh,0,0);
   int terminate=0,up=0,down=0,w=0,s=0;
@@ -139,20 +149,20 @@ int main(int argc,char *argv[]){
       w  = choice[3];
       s  = choice[4];
       pad1y=pad1.rect.y;				//copie position y des pads vers variable globale
-      pad2y=pad2.rect.y;			       
+      pad2y=pad2.rect.y;
       update(&ball,1,0);				//update position de la balle
       SDL_SetRenderDrawColor(renderer,0,0,0,0);	//mettre la couleur du renderer sur black
       SDL_RenderClear(renderer);			//applique couleur noir
-	
+
       if(up) update(&pad2,0,1);
       if(down) update(&pad2,0,0);
       if(w) update(&pad1,0,1);
       if(s) update(&pad1,0,0);
       SDL_SetRenderDrawColor(renderer,255,255,255,0); //mettre couleur à blanc
-      SDL_RenderFillRect(renderer,&(cline.rect));	//render ligne blanche	
+      SDL_RenderFillRect(renderer,&(cline.rect));	//render ligne blanche
       SDL_RenderFillRect(renderer,&(ball.rect));	//render balle
       SDL_RenderFillRect(renderer,&(pad1.rect));	//render pad1
-      SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2	
+      SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2
       SDL_RenderPresent(renderer);			//render tous les elements sur l'écran
       SDL_Delay(1000/60);
     }
