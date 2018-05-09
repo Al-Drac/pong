@@ -29,15 +29,19 @@ SDL_Renderer *renderer=NULL;
 
 
 typedef struct s_item{
-  SDL_Rect rectangle;
-  int vector_x;
-  int vector_y;
+  SDL_Rect  rectangle;
+  int       vector_x;
+  int       vector_y;
+  int       score;
+  char*     name;
 }t_item;
 
-t_item newObj(int x,int y,int w,int h,int vector_x,int vector_y){
+t_item newObj(char* std, int score,int x,int y,int w,int h,int vector_x,int vector_y){
 
   t_item new;
 
+  new.name = std;
+  new.score = score;
   new.rectangle.w=w;        //width
   new.rectangle.h=h;        //height
   new.rectangle.x=x;        //x position of the left topmost point
@@ -55,7 +59,6 @@ int   client(int argc, char *argv[]);
 void  init_sdl();
 void  loop(int choice[]);
 int   main(int argc,char *argv[]);
-void  status_up(t_item *obj,int ball,int u);
-
+void  status_up(t_item *obj,int ball,int u,t_item *pad1,t_item *pad2);
 
 #endif /* !PONG_H_ */
