@@ -10,49 +10,50 @@
 
 #include "pong.h"
 
-void update(Obj * object,int isball,int up){
-  if (isball==1){		//Verif obj = balle
-    object->rect.x+=object->xvel;
-    object->rect.y+=object->yvel;
-    if( (object->rect.x>winw-object->rect.w) || (object->rect.x<0) ){				//la balle sort de l'écran
+
+void status_up(t_item *obj,int ball,int u){
+  if (ball==1){		//Verif obj = balle
+    obj->rectangle.x+=obj->vector_x;
+    obj->rectangle.y+=obj->vector_y;
+    if( (obj->rectangle.x>window_Width-obj->rectangle.w) || (obj->rectangle.x<0) ){				//la balle sort de l'écran
       SDL_Delay(1000);
-      object->xvel=-object->xvel;
-      object->rect.x=winw/2;
-      object->rect.y=winh/2;
+      obj->vector_x=-obj->vector_x;
+      obj->rectangle.x=window_Width/2;
+      obj->rectangle.y=window_height/2;
     }
-    if(object->rect.x>winw-20-object->rect.w && object->rect.y>pad2y && object->rect.y<pad2y+100){	//la balle touche le pad2
-      object->xvel=-object->xvel;
-      object->rect.x=winw-20-object->rect.w;
+    if(obj->rectangle.x>window_Width-20-obj->rectangle.w && obj->rectangle.y>paddle_2 && obj->rectangle.y<paddle_2+100){	//la balle touche le pad2
+      obj->vector_x=-obj->vector_x;
+      obj->rectangle.x=window_Width-20-obj->rectangle.w;
     }
-    if(object->rect.x<20 && object->rect.y>pad1y && object->rect.y<pad1y+100){			//la balle touche le pad1
-      object->xvel=-object->xvel;
-      object->rect.x=20;
+    if(obj->rectangle.x<20 && obj->rectangle.y>paddle_1 && obj->rectangle.y<paddle_1+100){			//la balle touche le pad1
+      obj->vector_x=-obj->vector_x;
+      obj->rectangle.x=20;
     }
-    if(object->rect.y>winh-object->rect.h){								//La balle touche le bas de l'écran
-      object->yvel=-object->yvel;
-      object->rect.y=winh-object->rect.h;
+    if(obj->rectangle.y>window_height-obj->rectangle.h){								//La balle touche le bas de l'écran
+      obj->vector_y=-obj->vector_y;
+      obj->rectangle.y=window_height-obj->rectangle.h;
     }
-    if(object->rect.y<0){
-      object->yvel=-object->yvel;
-      object->rect.y=0;
+    if(obj->rectangle.y<0){
+      obj->vector_y=-obj->vector_y;
+      obj->rectangle.y=0;
     }
   }else {			//Si obj = un des pads
-    if(up==1)
-      object->rect.y-=object->yvel;
+    if(u==1)
+      obj->rectangle.y-=obj->vector_y;
     else
-      object->rect.y+=object->yvel;
-    if(object->rect.y>winh-object->rect.h){								//le pad touche bas de l'écran
-      object->rect.y=winh-object->rect.h;
+      obj->rectangle.y+=obj->vector_y;
+    if(obj->rectangle.y>window_height-obj->rectangle.h){								//le pad touche bas de l'écran
+      obj->rectangle.y=window_height-obj->rectangle.h;
     }
-    if(object->rect.y<0){										//le pad touche le haut de l'écran
-      object->rect.y=0;
+    if(obj->rectangle.y<0){										//le pad touche le haut de l'écran
+      obj->rectangle.y=0;
     }
   }
   return;
 }
 
-void initialize(){
-  printf("Hello");
+void init_sdl(){
+  printf("------------- initialisation SDL --------------\n");
   //initialisation SDL
   if(SDL_Init(SDL_INIT_VIDEO)!=0)
     {
@@ -60,15 +61,15 @@ void initialize(){
     }
 
   //crée window et renderer
-  win = SDL_CreateWindow("Pong",
+  window = SDL_CreateWindow("Pong",
 			 SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
 			 WINDOW_WIDTH,WINDOW_HEIGHT,0);
-  if(win==NULL){
+  if(window==NULL){
     printf("Window cannot be created %s\n",SDL_GetError());
 
   }
-  SDL_GetWindowSize(win,&winw,&winh);
-  renderer = SDL_CreateRenderer(win,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  SDL_GetWindowSize(window,&window_Width,&window_height);
+  renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
   if(renderer==NULL){
     printf("Renderer cannot be created %s\n",SDL_GetError());
   }
@@ -132,13 +133,17 @@ int main(int argc,char *argv[]){
       client(argc, argv);
     }
   }
-  initialize();
+  init_sdl();
   //creation des objets
-  Obj pad1 = newObj(5,(winh-100)/2,15,100,0,10);
-  Obj pad2 = newObj(winw-20,(winh-100)/2,15,100,0,10);
-  Obj ball = newObj(winw/2,winh/2,10,10,5,5);
-  Obj cline = newObj((winw-2)/2,0,2,winh,0,0);
-  int terminate=0,up=0,down=0,w=0,s=0;
+  t_item pad1  = newObj(5,(window_height-100)/2,15,100,0,10);
+  t_item pad2 = newObj(window_Width-20,(window_height-100)/2,15,100,0,10);
+  t_item ball = newObj(window_Width/2,window_height/2,10,10,5,5);
+  t_item cline = newObj((window_Width-2)/2,0,2,window_height,0,0);
+  int terminate=0;
+  int up=0;
+  int down=0;
+  int w=0;
+  int s=0;
   int choice[5] = {0};
   while(!terminate)				//boucle
     {
@@ -148,26 +153,30 @@ int main(int argc,char *argv[]){
       down = choice[2];
       w  = choice[3];
       s  = choice[4];
-      pad1y=pad1.rect.y;				//copie position y des pads vers variable globale
-      pad2y=pad2.rect.y;
-      update(&ball,1,0);				//update position de la balle
+      paddle_1=pad1.rectangle.y;				//copie position y des pads vers variable globale
+      paddle_2=pad2.rectangle.y;
+      status_up(&ball,1,0);				//update position de la balle
       SDL_SetRenderDrawColor(renderer,0,0,0,0);	//mettre la couleur du renderer sur black
       SDL_RenderClear(renderer);			//applique couleur noir
 
-      if(up) update(&pad2,0,1);
-      if(down) update(&pad2,0,0);
-      if(w) update(&pad1,0,1);
-      if(s) update(&pad1,0,0);
+      if(up)
+        status_up(&pad2,0,1);
+      if(down)
+        status_up(&pad2,0,0);
+      if(w)
+        status_up(&pad1,0,1);
+      if(s)
+        status_up(&pad1,0,0);
       SDL_SetRenderDrawColor(renderer,255,255,255,0); //mettre couleur à blanc
-      SDL_RenderFillRect(renderer,&(cline.rect));	//render ligne blanche
-      SDL_RenderFillRect(renderer,&(ball.rect));	//render balle
-      SDL_RenderFillRect(renderer,&(pad1.rect));	//render pad1
-      SDL_RenderFillRect(renderer,&(pad2.rect));	//render pad2
+      SDL_RenderFillRect(renderer,&(cline.rectangle));	//render ligne blanche
+      SDL_RenderFillRect(renderer,&(ball.rectangle));	//render balle
+      SDL_RenderFillRect(renderer,&(pad1.rectangle));	//render pad1
+      SDL_RenderFillRect(renderer,&(pad2.rectangle));	//render pad2
       SDL_RenderPresent(renderer);			//render tous les elements sur l'écran
       SDL_Delay(1000/60);
     }
   SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(win);
+  SDL_DestroyWindow(window);
   SDL_Quit();
-  return 0;
+  return (0);
 }

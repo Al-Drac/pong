@@ -20,8 +20,8 @@ LDFLAGS	= -Llib/ -lmy
 LDFLAGS=	-L/usr/include/SDL2  -lSDL2
 
 SRCS	=	client.c	\
-		server.c	\
-		main.c
+				server.c	\
+				main.c
 
 OBJS	= $(SRCS:.c=.o)
 
