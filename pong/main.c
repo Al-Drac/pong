@@ -84,10 +84,10 @@ void loop(int choice[]){
       case SDLK_DOWN:
 	choice[2] = 1;
 	break;
-      case SDLK_w:
+      case SDLK_s:
 	choice[3] = 1;
 	break;
-      case SDLK_s:
+      case SDLK_w:
 	choice[4] = 1;
 	break;
       }
@@ -100,10 +100,10 @@ void loop(int choice[]){
       case SDLK_DOWN:
 	choice[2] = 0;
 	break;
-      case SDLK_w:
+      case SDLK_s:
 	choice[3] = 0;
 	break;
-      case SDLK_s:
+      case SDLK_w:
 	choice[4] = 0;
 	break;
       }
@@ -136,8 +136,8 @@ int main(int argc,char *argv[]){
       terminate = choice[0];
       up = choice[1];
       down = choice[2];
-      w  = choice[3];
-      s  = choice[4];
+      s  = choice[3];
+      w  = choice[4];
       pad1y=pad1.rect.y;				//copie position y des pads vers variable globale
       pad2y=pad2.rect.y;			       
       update(&ball,1,0);				//update position de la balle
@@ -146,8 +146,8 @@ int main(int argc,char *argv[]){
 	
       if(up) update(&pad2,0,1);
       if(down) update(&pad2,0,0);
-      if(w) update(&pad1,0,1);
-      if(s) update(&pad1,0,0);
+      if(s) update(&pad1,0,1);
+      if(w) update(&pad1,0,0);
       SDL_SetRenderDrawColor(renderer,255,255,255,0); //mettre couleur à blanc
       SDL_RenderFillRect(renderer,&(cline.rect));	//render ligne blanche	
       SDL_RenderFillRect(renderer,&(ball.rect));	//render balle
