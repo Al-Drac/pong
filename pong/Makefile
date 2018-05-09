@@ -26,8 +26,8 @@ LFLAGS = -I include -L lib -l SDL2-2.0.0
 endif
 
 SRCS	=	client.c	\
-		server.c	\
-		main.c
+				server.c	\
+				main.c
 
 OBJS	= $(SRCS:.c=.o)
 

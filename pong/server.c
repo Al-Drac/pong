@@ -1,3 +1,13 @@
+/*
+** server.c for server in /home/samuel/tmp/pong/pong
+**
+** Made by THOMAS Samuel
+** Login   <thomas_s@etna-alternance.net>
+**
+** Started on  Wed May  9 09:35:25 2018 THOMAS Samuel
+** Last update Wed May  9 09:45:38 2018 THOMAS Samuel
+*/
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -40,5 +50,5 @@ void server()
 
       close(connfd);
       sleep(1);
-      }
+    }
 }
