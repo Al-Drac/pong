@@ -124,6 +124,9 @@ int main(int argc,char *argv[]){
   t_item pad2;
   t_item ball;
   t_item cline;
+  int test;
+
+  test = 0;
 
   printf("------------- Main --------------\n");
 
@@ -132,8 +135,11 @@ int main(int argc,char *argv[]){
       server();
     }
     if (!strcmp(argv[1], "-client")){
-      client(argc, argv);
+     test = client(argc, argv);
     }
+  }
+  if (test) {
+      return 1;
   }
   init_sdl();
   //creation des objets
