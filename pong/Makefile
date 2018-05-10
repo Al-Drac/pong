@@ -19,7 +19,7 @@ CFLAGS	+= -I/usr/include/SDL2
 CDEBUG	= -g3 -g
 
 LDFLAGS	= -Llib/ -lmy
-LDFLAGS=	-L/usr/include/SDL2  -lSDL2
+LDFLAGS=	-L/usr/include/SDL2  -lSDL2 -lSDL2_ttf
 
 ifeq ($(host),Darwin)
 LFLAGS = -I include -L lib -l SDL2-2.0.0
