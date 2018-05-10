@@ -24,6 +24,8 @@ int window_height;
 int paddle_1;
 int paddle_2;
 
+int menuOp;
+
 SDL_Window *window=NULL;
 SDL_Renderer *renderer=NULL;
 
