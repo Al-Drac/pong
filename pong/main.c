@@ -9,7 +9,7 @@
 */
 
 #include "pong.h"
-
+//#include <SDL2/SDL_ttf.h>
 void status_up(t_item * obj,int ball,int up, t_item *pad1, t_item *pad2){
 if (ball==1){		//Verif obj = balle
   obj->rectangle.x+=obj->vector_x;
@@ -91,10 +91,10 @@ void loop(int choice[]){
           case SDLK_DOWN:
 	         choice[2] = 1;
 	         break;
-          case SDLK_w:
+          case SDLK_s:
 	         choice[3] = 1;
 	          break;
-          case SDLK_s:
+          case SDLK_w:
 	         choice[4] = 1;
 	         break;
       }
@@ -107,10 +107,10 @@ void loop(int choice[]){
           case SDLK_DOWN:
 	         choice[2] = 0;
 	          break;
-          case SDLK_w:
+          case SDLK_s:
 	         choice[3] = 0;
 	         break;
-          case SDLK_s:
+          case SDLK_w:
 	         choice[4] = 0;
 	         break;
       }
@@ -118,6 +118,39 @@ void loop(int choice[]){
     }
   }
 }
+
+
+void menu()
+{
+  int counter = 0;
+  SDL_Event event;
+  do
+    {
+      printf("menu");
+      SDL_bool update = SDL_FALSE;
+      SDL_WaitEvent(&event);
+      if(event.type == SDL_KEYDOWN)
+	{
+	  if(event.key.keysym.scancode == SDL_SCANCODE_UP)
+	    {
+	      printf("GO SERVER");
+	      menuOp = 1;
+	      break;
+	    }
+	  else if(event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+	    {
+	      printf("GO CLIENT");
+	      menuOp = 2;
+	      break;
+	    }
+	}
+      if(update)
+	printf("%d.\n", counter);
+    }while(event.type != SDL_QUIT);
+}
+
+
+
 
 int main(int argc,char *argv[]){
   t_item pad1;
@@ -127,15 +160,23 @@ int main(int argc,char *argv[]){
 
   printf("------------- Main --------------\n");
 
-  if(argv[1]){
-    if (!strcmp(argv[1], "-server")){
-      server();
+
+  if(TTF_Init() == -1)
+    {
+      fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+      exit(EXIT_FAILURE);
     }
-    if (!strcmp(argv[1], "-client")){
-      client(argc, argv);
-    }
-  }
+  
   init_sdl();
+  menu();
+
+  if (menuOp == 1){
+    server();
+  }
+  if (menuOp == 2){
+    client(argc, argv);
+  }
+  
   //creation des objets
   pad1  = newObj("pad1",0,5,(window_height-100)/2,15,100,0,10);
   pad2  = newObj("pad2",0,window_Width-20,(window_height-100)/2,15,100,0,10);
@@ -145,8 +186,8 @@ int main(int argc,char *argv[]){
   int terminate=0;
   int up=0;
   int down=0;
-  int w=0;
   int s=0;
+  int w=0;
 
   int choice[5] = {0};
   while(!terminate)				//boucle
@@ -156,8 +197,8 @@ int main(int argc,char *argv[]){
       terminate     = choice[0];
       up            = choice[1];
       down          = choice[2];
-      w             = choice[3];
-      s             = choice[4];
+      s             = choice[3];
+      w             = choice[4];
 
       paddle_1=pad1.rectangle.y;				//copie position y des pads vers variable globale
       paddle_2=pad2.rectangle.y;
@@ -169,9 +210,9 @@ int main(int argc,char *argv[]){
         status_up(&pad2,0,1, &pad1,&pad2);
       if(down)
         status_up(&pad2,0,0, &pad1,&pad2);
-      if(w)
-        status_up(&pad1,0,1, &pad1,&pad2);
       if(s)
+        status_up(&pad1,0,1, &pad1,&pad2);
+      if(w)
         status_up(&pad1,0,0, &pad1,&pad2);
       SDL_SetRenderDrawColor(renderer,255,255,255,0); //mettre couleur à blanc
       SDL_RenderFillRect(renderer,&(cline.rectangle));	//render ligne blanche

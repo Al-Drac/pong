@@ -15,6 +15,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
 #include <string.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 #define WINDOW_WIDTH 720
 #define WINDOW_HEIGHT 480
@@ -23,6 +25,8 @@ int window_Width;
 int window_height;
 int paddle_1;
 int paddle_2;
+
+int menuOp;
 
 SDL_Window *window=NULL;
 SDL_Renderer *renderer=NULL;
