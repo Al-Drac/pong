@@ -49,15 +49,10 @@ COLOR=          \x1b[32;01m
 
 all : $(NAME)
 
-ifeq ($(host),Darwin)
-$(NAME) : $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(LFLAGS)
-	$(ECHO) '\033[0;32m> Compiled\033[0m'
-else
 $(NAME) : $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS)
 	$(ECHO) '\033[0;32m> Compiled\033[0m'
-endif
+
 clean :
 	$(RM) $(OBJS)
 	$(ECHO) '\033[0;35m> Directory cleaned\033[0m'
