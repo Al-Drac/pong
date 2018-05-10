@@ -122,15 +122,36 @@ void loop(int choice[]){
 
 void menu()
 {
-  int counter = 0;
+  //int counter = 0;
   SDL_Event event;
   do
     {
       printf("menu");
-      SDL_bool update = SDL_FALSE;
+
+      SDL_SetRenderDrawColor(renderer,0,0,0,0);  
+      SDL_RenderClear(renderer);
+
+      /*
+      TTF_Init();
+      TTF_Font* Sans = TTF_OpenFont("arial.ttf", 24);
+      SDL_Color White = {255, 255, 255, 120};
+      SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "put your text here", White);
+      SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); 
+      SDL_Rect Message_rect; 
+      Message_rect.x = 0; 
+      Message_rect.y = 0;
+      Message_rect.w = 100;
+      Message_rect.h = 100; 
+      SDL_RenderCopy(renderer, Message, NULL, &Message_rect); 
+      TTF_CloseFont(Sans);
+      TTF_Quit();
+      SDL_FreeSurface(surfaceMessage);
+      */
+      
+      SDL_RenderPresent(renderer);
       SDL_WaitEvent(&event);
-      if(event.type == SDL_KEYDOWN)
-	{
+      if(event.type == SDL_KEYDOWN)	
+	{ 
 	  if(event.key.keysym.scancode == SDL_SCANCODE_UP)
 	    {
 	      printf("GO SERVER");
@@ -144,9 +165,8 @@ void menu()
 	      break;
 	    }
 	}
-      if(update)
-	printf("%d.\n", counter);
-    }while(event.type != SDL_QUIT);
+    }
+  while(event.type != SDL_QUIT);
 }
 
 
@@ -159,13 +179,6 @@ int main(int argc,char *argv[]){
   t_item cline;
 
   printf("------------- Main --------------\n");
-
-
-  if(TTF_Init() == -1)
-    {
-      fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-      exit(EXIT_FAILURE);
-    }
   
   init_sdl();
   menu();
